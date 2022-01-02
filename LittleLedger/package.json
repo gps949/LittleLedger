@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "fs": "^0.0.1-security",
+    "multer": "^1.4.4",
+    "xlsx": "^0.17.4"
+  }
+}

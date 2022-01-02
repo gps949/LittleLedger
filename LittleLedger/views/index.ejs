@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <link rel="apple-touch-icon-precomposed" size="120x120" href="imgs/ledger120x120.png" />
+  <!-- MDUI CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css" />
+  <title>小记账 - 账本设置</title>
+</head>
+
+<body class="mdui-theme-accent-blue mdui-bottom-nav-fixed mdui-theme-layout-auto" onload="loadPage()">
+  <!-- 标题栏 -->
+  <div class="mdui-toolbar mdui-color-theme-accent">
+    <i class="mdui-icon material-icons" onclick="window.location.href='/'">event_note</i>
+    <div class="mdui-typo-headline mdui-show-xs" onclick="window.location.href='/'">小记账</div>
+    <div class="mdui-toolbar-spacer"></div>
+    <a class="mdui-typo-title" href="ledgers/<%= currentLedger %>" download="<%= currentLedger %>">账本 <%-currentLedger%></a>
+  </div>
+  <!-- 支出页面 -->
+  <div id="expenses" class="mdui-container">
+    <form action="/" method="POST">
+      <input name="addExpenses" class="mdui-hidden" />
+      <div class="mdui-textfield">
+        <input name="expenses_value" type="text" pattern="^([0-9]+)(\.\d{1,2})?$" required class="mdui-textfield-input"
+          placeholder="支出金额" />
+        <div class="mdui-textfield-error">金额格式不对</div>
+        <div class="mdui-textfield-helper">请在此填写支出金额（不带负号）</div>
+      </div>
+      <div class="mdui-textfield">
+        <input name="expenses_comments" type="text" class="mdui-textfield-input" placeholder="附加说明" />
+        <div class="mdui-textfield-helper">请在此填写对此笔支出的备注</div>
+      </div>
+      <br />
+      <label class="mdui-textfield-label">支出类型</label>
+      <select name="expenses_type" class="mdui-select" mdui-select="{position: 'bottom'}">
+        <% for(var i=0; i < all_expenses_type.length; i++){ %>
+          <option value="<%= all_expenses_type[i] %>">
+            <%= all_expenses_type[i] %>
+          </option>
+          <% } %>
+      </select>
+      <br /><br />
+      <label class="mdui-textfield-label">支出账户</label>
+      <select name="expenses_account" class="mdui-select" mdui-select="{position: 'bottom'}">
+        <% for(var i=0; i < all_account.length; i++){ %>
+          <option value="<%= all_account[i] %>">
+            <%= all_account[i] %>
+          </option>
+          <% } %>
+      </select>
+      <button type="submit"
+        class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-float-right">记录</button>
+    </form>
+  </div>
+  <!-- 收入页面 -->
+  <div id="income" class="mdui-container">
+    <form action="/" method="POST">
+      <input name="addIncome" class="mdui-hidden" />
+      <div class="mdui-textfield">
+        <input name="income_value" type="text" pattern="^([0-9]+)(\.\d{1,2})?$" required class="mdui-textfield-input"
+          placeholder="收入金额" />
+        <div class="mdui-textfield-error">金额格式不对</div>
+        <div class="mdui-textfield-helper">请在此填写收入金额</div>
+      </div>
+      <div class="mdui-textfield">
+        <input name="income_comments" type="text" class="mdui-textfield-input" placeholder="附加说明" />
+        <div class="mdui-textfield-helper">请在此填写对此笔收入的备注</div>
+      </div>
+      <br />
+      <label class="mdui-textfield-label">收入类型</label>
+      <select name="income_type" class="mdui-select" mdui-select="{position: 'bottom'}">
+        <% for(var i=0; i < all_income_type.length; i++){ %>
+          <option value="<%= all_income_type[i] %>">
+            <%= all_income_type[i] %>
+          </option>
+          <% } %>
+      </select>
+      <br /><br />
+      <label class="mdui-textfield-label">收入账户</label>
+      <select name="income_account" class="mdui-select" mdui-select="{position: 'bottom'}">
+        <% for(var i=0; i < all_account.length; i++){ %>
+          <option value="<%= all_account[i] %>">
+            <%= all_account[i] %>
+          </option>
+          <% } %>
+      </select>
+      <button type="submit"
+        class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-float-right">记录</button>
+    </form>
+  </div>
+  <!-- 转账页面 -->
+  <div id="transfer" class="mdui-container">
+    <form action="/" method="POST">
+      <input name="addTransfer" class="mdui-hidden" />
+      <div class="mdui-textfield">
+        <input name="transfer_value" type="text" pattern="^([0-9]+)(\.\d{1,2})?$" required class="mdui-textfield-input"
+          placeholder="转账金额" />
+        <div class="mdui-textfield-error">金额格式不对</div>
+        <div class="mdui-textfield-helper">请在此填写转账金额</div>
+      </div>
+      <div class="mdui-textfield">
+        <input name="transfer_comments" type="text" class="mdui-textfield-input" placeholder="附加说明" />
+        <div class="mdui-textfield-helper">请在此填写对此笔转账的备注</div>
+      </div>
+      <br />
+      <label class="mdui-textfield-label">转账类型</label>
+      <select name="transfer_type" class="mdui-select" mdui-select="{position: 'bottom'}">
+        <% for(var i=0; i < all_transfer_type.length; i++){ %>
+          <option value="<%= all_transfer_type[i] %>">
+            <%= all_transfer_type[i] %>
+          </option>
+          <% } %>
+      </select>
+      <br /><br />
+      <label class="mdui-textfield-label">转出账户<i class="mdui-icon material-icons">forward</i>转入账户</label>
+      <select name="transfer_out" class="mdui-select" mdui-select="{position: 'bottom'}">
+        <% for(var i=0; i < all_account.length; i++){ %>
+          <option value="<%= all_account[i] %>">
+            <%= all_account[i] %>
+          </option>
+          <% } %>
+      </select>
+      <i class="mdui-icon material-icons">forward</i>
+      <select name="transfer_in" class="mdui-select" mdui-select="{position: 'bottom'}">
+        <% for(var i=0; i < all_account.length; i++){ %>
+          <option value="<%= all_account[i] %>">
+            <%= all_account[i] %>
+          </option>
+          <% } %>
+      </select>
+      <button type="submit"
+        class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-float-right">记录</button>
+    </form>
+  </div>
+  <!-- 设置页面 -->
+  <div id="settings" class="mdui-container">
+    <br /><br />
+    <div class="mdui-panel" mdui-panel="{accordion: true}">
+      <!-- 添加资金账户卡片 -->
+      <div class="mdui-panel-item">
+        <div class="mdui-panel-item-header">添加资金账户</div>
+        <div class="mdui-panel-item-body">
+          <form action="/" method="POST">
+            <input name="addAssets" class="mdui-hidden" />
+            <div class="mdui-textfield">
+              <input name="assets_account_name" type="text" required class="mdui-textfield-input" placeholder="资金账户名" />
+              <div class="mdui-textfield-error">账户名不能为空</div>
+              <div class="mdui-textfield-helper">请在此填写要新增的资金账户名</div>
+            </div>
+            <div class="mdui-textfield">
+              <input name="assets_account_value" type="text" pattern="^([0-9]+)(\.\d{1,2})?$" required
+                class="mdui-textfield-input" placeholder="初始金额" />
+              <div class="mdui-textfield-error">金额格式不对</div>
+              <div class="mdui-textfield-helper">请在此填写要新增资金账户的初始余额</div>
+            </div>
+            <br />
+            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">添加</button>
+          </form>
+        </div>
+      </div>
+      <!-- 添加负债账户卡片 -->
+      <div class="mdui-panel-item">
+        <div class="mdui-panel-item-header">添加负债账户</div>
+        <div class="mdui-panel-item-body">
+          <form action="/" method="POST">
+            <input name="addDebt" class="mdui-hidden" />
+            <div class="mdui-textfield">
+              <input name="debt_account_name" type="text" required class="mdui-textfield-input" placeholder="负债账户名" />
+              <div class="mdui-textfield-error">账户名不能为空</div>
+              <div class="mdui-textfield-helper">请在此填写要新增的负债账户名</div>
+            </div>
+            <div class="mdui-textfield">
+              <input name="debt_account_value" type="text" pattern="^([0-9]+)(\.\d{1,2})?$" required
+                class="mdui-textfield-input" placeholder="初始负债" />
+              <div class="mdui-textfield-error">金额格式不对</div>
+              <div class="mdui-textfield-helper">请在此填写要新增负债账户的初始余债（不带负号）</div>
+            </div>
+            <br />
+            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">添加</button>
+          </form>
+        </div>
+      </div>
+      <!-- 添加动账类型卡片 -->
+      <div class="mdui-panel-item">
+        <div class="mdui-panel-item-header">添加动账类型</div>
+        <div class="mdui-panel-item-body">
+          <form action="/" method="POST">
+            <input name="addReason" class="mdui-hidden" />
+            <select name="reason_sort" class="mdui-select" mdui-select="{position: 'bottom'}">
+              <option value="0">支出类</option>
+              <option value="1">收入类</option>
+              <option value="2">转账类</option>
+            </select>
+            <br /><br />
+            <div class="mdui-textfield">
+              <input name="reason_name" type="text" required class="mdui-textfield-input" placeholder="动账类型名称" />
+              <div class="mdui-textfield-error">动账类型名称不能为空</div>
+              <div class="mdui-textfield-helper">请在此填写要新增的动账类型名称</div>
+            </div>
+            <br />
+            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">添加</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 导航栏 -->
+  <div id="tab" class="mdui-bottom-nav mdui-color-theme-accent" style="padding-bottom: 10px;" mdui-tab>
+    <a id="expenses_tab" href="#expenses" class="mdui-ripple mdui-ripple-white">
+      <i class="mdui-icon material-icons">remove_circle_outline</i>
+      <label>记支出</label>
+    </a>
+    <a id="income_tab" href="#income" class="mdui-ripple mdui-ripple-white">
+      <i class="mdui-icon material-icons">add_circle_outline</i>
+      <label>记收入</label>
+    </a>
+    <a id="transfer_tab" href="#transfer" class="mdui-ripple mdui-ripple-white">
+      <i class="mdui-icon material-icons">swap_vertical_circle</i>
+      <label>记转账</label>
+    </a>
+    <a id="settings_tab" href="#settings" class="mdui-ripple mdui-ripple-white">
+      <i class="mdui-icon material-icons">settings</i>
+      <label>设置</label>
+    </a>
+  </div>
+
+  <!-- MDUI JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+  <script>
+    function loadPage() {
+      if ('<%-loadMsg%>' != '') {
+        mdui.snackbar({
+          message: '<%-loadMsg%>',
+          timeout: 1000
+        });
+      }
+      var inst = new mdui.Tab('#tab');
+      inst.show('<%-loadTab%>');
+
+    }
+  </script>
+</body>
+
+</html>
