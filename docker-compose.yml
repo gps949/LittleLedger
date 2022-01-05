@@ -7,8 +7,8 @@ services:
     ports:
      - 3456:3456
     environment:
-      LL_USE: <替换为用户名>
-      LL_PWD: <替换口令>
+      LL_USER: ""
+      LL_PWD: ""
      volumes:
-     - ./data:/home/littleledger/ledgers gps949
+     - /tmp:/home/littleledger/ledgers
     privileged: true
