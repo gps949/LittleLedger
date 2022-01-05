@@ -1,0 +1,11 @@
+version: '3'
+services:
+  littleledger:
+    image: gps949/littleledger:latest
+    container_name: littleledger
+    restart: always
+    ports:
+     - 3456:3456
+    volumes:
+     - ./data:/home/littleledger/ledgers gps949
+    privileged: true
