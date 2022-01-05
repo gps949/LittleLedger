@@ -6,6 +6,9 @@ services:
     restart: always
     ports:
      - 3456:3456
-    volumes:
+    environment:
+      LL_USE: <替换为用户名>
+      LL_PWD: <替换口令>
+     volumes:
      - ./data:/home/littleledger/ledgers gps949
     privileged: true
