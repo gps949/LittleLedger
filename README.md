@@ -29,6 +29,11 @@
 docker run --priviledged=true -d --restart=always -p <本地服务端口>:3456 -v <持久存放账本本地路径>:/home/littleledger/ledgers gps949/littleledger:latest
 ```    
 将其中<本地服务端口>、<持久存放账本本地路径>改成你需要的内容。   
+   
+【new】如果你需要在访问应用时添加验证（用户名口令），添加-e参数，如下形式：   
+```bash
+docker run --priviledged=true -d --restart=always -e LL_USER=<你的用户名> -e LL_PWD=<你的口令> -p <本地服务端口>:3456 -v <持久存放账本本地路径>:/home/littleledger/ledgers gps949/littleledger:latest
+```    
 
 ### 直接运行Node   
 ```bash
@@ -37,6 +42,14 @@ cd LittleLedger/LittleLedger
 npm install
 npm build
 node app.js
+```   
+【new】如果你需要在访问应用时添加验证（用户名口令），添加参数，如下形式：    
+```bash
+git clone https://github.com/gps949/LittleLedger.git
+cd LittleLedger/LittleLedger
+npm install
+npm build
+node app.js USERNAME=<你的用户名> PASSWORD=<你的口令>
 ```   
 ### 补充说明
 1. 通过上面两种方法启动之后，即可通过浏览器访问3456端口进行使用。初次使用建议在设置页添加资金账户、负债账户和动账种类，也可以在之后使用过程中随时添加。
