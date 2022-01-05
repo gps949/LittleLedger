@@ -3,7 +3,6 @@ RUN mkdir -p /home/littleledger
 COPY ./LittleLedger /home/littleledger
 WORKDIR /home/littleledger
 RUN npm install
-RUN npm build
 
 ENV HOST 0.0.0.0
 ENV PORT 3456
