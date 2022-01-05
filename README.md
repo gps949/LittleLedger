@@ -40,7 +40,6 @@ docker run --priviledged=true -d --restart=always -e LL_USER=<你的用户名> -
 git clone https://github.com/gps949/LittleLedger.git
 cd LittleLedger/LittleLedger
 npm install
-npm build
 node app.js
 ```   
 【new】如果你需要在访问应用时添加验证（用户名口令），添加参数，如下形式：    
@@ -48,7 +47,6 @@ node app.js
 git clone https://github.com/gps949/LittleLedger.git
 cd LittleLedger/LittleLedger
 npm install
-npm build
 node app.js USERNAME=<你的用户名> PASSWORD=<你的口令>
 ```   
 ### 补充说明
