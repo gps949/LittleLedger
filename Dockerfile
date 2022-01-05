@@ -9,4 +9,4 @@ ENV PORT 3456
 
 EXPOSE 3456
 
-CMD ["node", "/home/littleledger/app.js"]
+CMD ["sh", "-c", "node /home/littleledger/app.js USERNAME=$LL_USER PASSWORD=$LL_PWD"]

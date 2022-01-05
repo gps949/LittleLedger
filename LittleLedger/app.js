@@ -3,6 +3,40 @@ const xlsx = require('xlsx')
 var fs = require('fs');
 var app = express();
 var bodyParser = require('body-parser');
+
+var username = "";
+var pwd = "";
+var args = process.argv.splice(2);
+args.forEach(function(v,i,a){
+    if (v.substring(0,9)=="USERNAME=")
+        username = v.substring(9);
+    if (v.substring(0,9)=="PASSWORD=")
+        pwd = v.substring(9);
+});
+function authentication(req, res, next) {
+    var authheader = req.headers.authorization;
+    if (!authheader) {
+        var err = new Error('身份未认证');
+        res.setHeader('WWW-Authenticate', 'Basic');
+        err.status = 401;
+        return next(err)
+    }
+    var auth = new Buffer.from(authheader.split(' ')[1],'base64').toString().split(':');
+    var user = auth[0];
+    var pass = auth[1];
+    if (user == username && pass == pwd) {
+        console.log('身份认证成功');
+        next();
+    } else {
+        var err = new Error('身份未认证');
+        res.setHeader('WWW-Authenticate', 'Basic');
+        err.status = 401;
+        return next(err);
+    }
+}
+if (pwd!="")
+    app.use(authentication);
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/imgs", express.static("imgs"))
@@ -428,9 +462,9 @@ function addTransfer(current_file_name, transfer_value, transfer_comments, trans
 
 var server = app.listen(3456, function () {
 
-    var host = server.address().address
-    var port = server.address().port
+    var host = server.address().address;
+    var port = server.address().port;
 
-    console.log("应用实例，访问地址为 http://%s:%s", host, port)
+    console.log("应用实例，访问地址为 http://%s:%s", host, port);
 
 })
