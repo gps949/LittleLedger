@@ -22,7 +22,7 @@
 ## 使用方法
 
 ### 通过Docker（推荐）
-`docker run --priviledged=true -d --restart=always -p <本地服务端口>:3456 -v <持久存放账本本地路径>:/home/littleledger/ledgers gps949/littleledger:latest`   
+```docker run --priviledged=true -d --restart=always -p <本地服务端口>:3456 -v <持久存放账本本地路径>:/home/littleledger/ledgers gps949/littleledger:latest```    
 将其中<本地服务端口>、<持久存放账本本地路径>改成你需要的内容。   
 
 ### 直接运行Node   
