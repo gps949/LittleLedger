@@ -1,7 +1,7 @@
 # LittleLedger
 自用”单记式“账本应用
 
-<img src="https://github.com/gps949/LittleLedger/raw/main/IMG_3429.PNG" width="100%" /> 
+<img src="https://github.com/gps949/LittleLedger/raw/main/IMG_3429.PNG" width="50%" /> 
 
 ## 什么是“单记式”？
 目前大多数账本应用，会有各种让人眼花缭乱的功能，也许财会类的专业人员会比较喜欢，但普通人（至少对我而言）对其中绝大多数功能的需求或许是没有，或许是每个月每个季度甚至每年才有偶尔有个一次两次。   
