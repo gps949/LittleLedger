@@ -35,6 +35,11 @@ docker run --priviledged=true -d --restart=always -p <本地服务端口>:3456 -
 docker run --priviledged=true -d --restart=always -e LL_USER=<你的用户名> -e LL_PWD=<你的口令> -p <本地服务端口>:3456 -v <持久存放账本本地路径>:/home/littleledger/ledgers gps949/littleledger:latest
 ```    
 
+### 使用docker compose   
+感谢@frankwuzp 提供的compose文件。
+使用compose文件执行docker-compose命令即可。   
+*注意根据自己情况修改其中的账本挂载路径及（如果需要的话）用户名口令。*   
+
 ### 直接运行Node   
 ```bash
 git clone https://github.com/gps949/LittleLedger.git
