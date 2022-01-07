@@ -7,10 +7,10 @@ var bodyParser = require('body-parser');
 var username = "";
 var pwd = "";
 var args = process.argv.splice(2);
-args.forEach(function(v,i,a){
-    if (v.substring(0,9)=="USERNAME=")
+args.forEach(function (v, i, a) {
+    if (v.substring(0, 9) == "USERNAME=")
         username = v.substring(9);
-    if (v.substring(0,9)=="PASSWORD=")
+    if (v.substring(0, 9) == "PASSWORD=")
         pwd = v.substring(9);
 });
 function authentication(req, res, next) {
@@ -21,7 +21,7 @@ function authentication(req, res, next) {
         err.status = 401;
         return next(err)
     }
-    var auth = new Buffer.from(authheader.split(' ')[1],'base64').toString().split(':');
+    var auth = new Buffer.from(authheader.split(' ')[1], 'base64').toString().split(':');
     var user = auth[0];
     var pass = auth[1];
     if (user == username && pass == pwd) {
@@ -34,7 +34,7 @@ function authentication(req, res, next) {
         return next(err);
     }
 }
-if (pwd!="")
+if (pwd != "")
     app.use(authentication);
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -50,26 +50,13 @@ function checkLedger(current_file_name, last_file_name) {
         if (fs.existsSync(last_file_name)) {
             console.log("账本不存在，从上月账本创建 " + current_file_name);
             fs.copyFileSync(last_file_name, current_file_name);
+            initLedger(current_file_name);
             console.log("创建成功");
         }
         else {
             console.log("账本不存在，从模板创建 " + current_file_name);
             fs.copyFileSync("./templates/ledger.xlsx", current_file_name);
-            /*
-            var wb = xlsx.utils.book_new();
-            wb.SheetNames.push("资金账户", "负债账户", "动账种类");
-            xlsx.writeFile(wb, current_file_name, { cellDates: true });
-            */
             console.log("创建成功");
-            /*
-            wb = xlsx.readFile(current_file_name, { cellDates: true });
-            xlsx.utils.sheet_add_aoa(wb.Sheets["资金账户"], [["用途", "备注"]], { origin: "B1" });
-            xlsx.utils.sheet_add_aoa(wb.Sheets["负债账户"], [["用途", "备注"]], { origin: "B1" });
-            xlsx.utils.sheet_add_aoa(wb.Sheets["资金账户"], [["月初余额"], ["当前余额"]], { origin: "A2" });
-            xlsx.utils.sheet_add_aoa(wb.Sheets["负债账户"], [["月初余债"], ["当前余债"]], { origin: "A2" });
-            xlsx.utils.sheet_add_aoa(wb.Sheets["动账种类"], [["支出类型", "收入类型", "转账类型"]], { origin: "A1" });
-            xlsx.writeFile(wb, current_file_name, { cellDates: true });
-            */
         }
     }
 }
@@ -183,6 +170,80 @@ app.post('/', function (req, res) {
 
 
 });
+
+function initLedger(current_file_name) {
+    var wb = xlsx.readFile(current_file_name, { cellDates: true });
+    var curSheet = wb.Sheets["资金账户"];
+    var colNo = 3;
+    var colName = xlsx.utils.encode_col(colNo);
+    var cellAddr = colName + "1";
+    var accountNameCell = curSheet[cellAddr] ? curSheet[cellAddr].v : "";
+    while (accountNameCell != "") {
+        curSheet[colName + "2"].v = curSheet[colName + "3"].v;
+        var temp=xlsx.utils.format_cell(curSheet[colName + "3"]);
+        colNo++;
+        colName = xlsx.utils.encode_col(colNo);
+        cellAddr = colName + "1";
+        accountNameCell = curSheet[cellAddr] ? curSheet[cellAddr].v : "";
+    }
+    var rowNo = 4;
+    var dateCell = curSheet["A" + rowNo] ? curSheet["A" + rowNo].v : "";
+    while (dateCell != "") {
+        curSheet["A" + rowNo].t = "n";
+        curSheet["A" + rowNo].v = "";
+        curSheet["B" + rowNo].v = "";
+        curSheet["C" + rowNo].v = "";
+        colNo = 3;
+        colName = xlsx.utils.encode_col(colNo);
+        accountNameCell = curSheet[colName + "1"] ? curSheet[colName + "1"].v : "";
+        while (accountNameCell != "") {
+            if (curSheet[colName + rowNo])
+                curSheet[colName + rowNo].v = "";
+            colNo++;
+            colName = xlsx.utils.encode_col(colNo);
+            accountNameCell = curSheet[colName + "1"] ? curSheet[colName + "1"].v : "";
+        }
+        rowNo++;
+        dateCell = curSheet["A" + rowNo] ? curSheet["A" + rowNo].v : "";
+    }
+
+    curSheet = wb.Sheets["负债账户"];
+    colNo = 3;
+    colName = xlsx.utils.encode_col(colNo);
+    cellAddr = colName + "1";
+    accountNameCell = curSheet[cellAddr] ? curSheet[cellAddr].v : "";
+    while (accountNameCell != "") {
+        curSheet[colName + "2"].v = curSheet[colName + "3"].v;
+        colNo++;
+        colName = xlsx.utils.encode_col(colNo);
+        cellAddr = colName + "1";
+        accountNameCell = curSheet[cellAddr] ? curSheet[cellAddr].v : "";
+    }
+    var rowNo = 4;
+    var dateCell = curSheet["A" + rowNo] ? curSheet["A" + rowNo].v : "";
+    while (dateCell != "") {
+        curSheet["A" + rowNo].t = "n";
+        curSheet["A" + rowNo].v = "";
+        curSheet["B" + rowNo].v = "";
+        curSheet["C" + rowNo].v = "";
+        colNo = 3;
+        colName = xlsx.utils.encode_col(colNo);
+        accountNameCell = curSheet[colName + "1"] ? curSheet[colName + "1"].v : "";
+        while (accountNameCell != "") {
+            if (curSheet[colName + rowNo])
+                curSheet[colName + rowNo].v = "";
+            colNo++;
+            colName = xlsx.utils.encode_col(colNo);
+            accountNameCell = curSheet[colName + "1"] ? curSheet[colName + "1"].v : "";
+        }
+        rowNo++;
+        dateCell = curSheet["A" + rowNo] ? curSheet["A" + rowNo].v : "";
+    }
+
+    xlsx.writeFile(wb, current_file_name, { cellDates: true });
+    console.log("完成自上月账本初始月账本！\n");
+    return ("OK");
+}
 
 function getExpenseTypeList(current_file_name) {
     var expenses_list = [];
