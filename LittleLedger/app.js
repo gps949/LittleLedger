@@ -1,5 +1,5 @@
 var express = require('express');
-const xlsx = require('xlsx')
+const xlsx = require('xlsx');
 var fs = require('fs');
 var app = express();
 var bodyParser = require('body-parser');
@@ -179,8 +179,11 @@ function initLedger(current_file_name) {
     var cellAddr = colName + "1";
     var accountNameCell = curSheet[cellAddr] ? curSheet[cellAddr].v : "";
     while (accountNameCell != "") {
-        curSheet[colName + "2"].v = curSheet[colName + "3"].v;
-        var temp=xlsx.utils.format_cell(curSheet[colName + "3"]);
+        for(i=4; i<=1000; i++){
+            if (curSheet[colName+i] && curSheet[colName+i].v != ""){
+                curSheet[colName + "2"].v+=curSheet[colName+i].v ;
+            }
+        }
         colNo++;
         colName = xlsx.utils.encode_col(colNo);
         cellAddr = colName + "1";
@@ -213,7 +216,11 @@ function initLedger(current_file_name) {
     cellAddr = colName + "1";
     accountNameCell = curSheet[cellAddr] ? curSheet[cellAddr].v : "";
     while (accountNameCell != "") {
-        curSheet[colName + "2"].v = curSheet[colName + "3"].v;
+        for(i=4; i<=1000; i++){
+            if (curSheet[colName+i] && curSheet[colName+i].v != ""){
+                curSheet[colName + "2"].v+=curSheet[colName+i].v ;
+            }
+        }
         colNo++;
         colName = xlsx.utils.encode_col(colNo);
         cellAddr = colName + "1";
@@ -336,7 +343,7 @@ function addAssets(current_file_name, assets_account_name, assets_account_value)
     if (accountNameCell != assets_account_name) {
         xlsx.utils.sheet_add_aoa(assetsSheet, [[assets_account_name], [assets_account_value], [assets_account_value]], { origin: cellAddr });
         wb.Sheets["资金账户"][colName + "2"].t = "n";
-        wb.Sheets["资金账户"][colName + "3"] = { t: "n", v: assets_account_value, F: colName + "3:" + colName + "3", f: colName + "2+" + "SUM(" + colName + "4 :" + colName + "1000)" };
+        wb.Sheets["资金账户"][colName + "3"] = { t: "n", v: assets_account_value, f: colName + "2+" + "SUM(" + colName + "4 :" + colName + "1000)" };
         xlsx.writeFile(wb, current_file_name, { cellDates: true });
         console.log("新增资金账户名：" + assets_account_name + "\n新增资金账户初始资金：" + assets_account_value + "\n");
         return ("OK");
@@ -363,7 +370,7 @@ function addDebt(current_file_name, debt_account_name, debt_account_value) {
     if (accountNameCell != debt_account_name) {
         xlsx.utils.sheet_add_aoa(debtSheet, [[debt_account_name], [debt_account_value], [debt_account_value]], { origin: cellAddr });
         wb.Sheets["负债账户"][colName + "2"].t = "n";
-        wb.Sheets["负债账户"][colName + "3"] = { t: "n", v: debt_account_value, F: colName + "3:" + colName + "3", f: colName + "2+" + "SUM(" + colName + "4 :" + colName + "1000)" };
+        wb.Sheets["负债账户"][colName + "3"] = { t: "n", v: debt_account_value, f: colName + "2+" + "SUM(" + colName + "4 :" + colName + "1000)" };
         xlsx.writeFile(wb, current_file_name, { cellDates: true });
         console.log("新增负债账户名：" + debt_account_name + "\n新增负债账户初始债务：" + debt_account_value + "\n");
         return ("OK");
