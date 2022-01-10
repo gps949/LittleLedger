@@ -26,13 +26,13 @@
 
 ### 通过Docker（推荐）
 ```bash
-docker run --priviledged=true --restart=always -p <本地服务端口>:3456 -v <持久存放账本本地路径>:/home/littleledger/ledgers gps949/littleledger:latest
+docker run --privileged=true -d --restart=always -p <本地服务端口>:3456 -v <持久存放账本本地路径>:/home/littleledger/ledgers gps949/littleledger:latest
 ```    
 将其中<本地服务端口>、<持久存放账本本地路径>改成你需要的内容。   
    
 【new】如果你需要在访问应用时添加验证（用户名口令），添加-e参数，如下形式：   
 ```bash
-docker run --priviledged=true --restart=always -e LL_USER=<你的用户名> -e LL_PWD=<你的口令> -p <本地服务端口>:3456 -v <持久存放账本本地路径>:/home/littleledger/ledgers gps949/littleledger:latest
+docker run --privileged=true -d --restart=always -e LL_USER=<你的用户名> -e LL_PWD=<你的口令> -p <本地服务端口>:3456 -v <持久存放账本本地路径>:/home/littleledger/ledgers gps949/littleledger:latest
 ```    
 
 ### 使用docker compose   
