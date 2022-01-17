@@ -436,7 +436,7 @@ function addExpenses(current_file_name, expenses_value, expenses_comments, expen
         return ("NoAccount");
     }
     if (expensesTypeFlag) {
-        cellAddr = colName + "2";
+        cellAddr = colName + "3";
         var accountRestCell = accountSheet[cellAddr] ? accountSheet[cellAddr].v : 0;
         if (expenses_value > accountRestCell) {
             console.log("账户余额不足！");
