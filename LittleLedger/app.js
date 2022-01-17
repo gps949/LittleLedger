@@ -436,9 +436,14 @@ function addExpenses(current_file_name, expenses_value, expenses_comments, expen
         return ("NoAccount");
     }
     if (expensesTypeFlag) {
-        cellAddr = colName + "3";
-        var accountRestCell = accountSheet[cellAddr] ? accountSheet[cellAddr].v : 0;
-        if (expenses_value > accountRestCell) {
+        cellAddr = colName + "2";
+        var curBalance =  accountSheet[cellAddr] ? accountSheet[cellAddr].v : 0;
+        for(i=4; i<=1000; i++){
+            if (accountSheet[colName+i] && accountSheet[colName+i].v != ""){
+                curBalance+=accountSheet[colName+i].v ;
+            }
+        }
+        if (expenses_value > curBalance) {
             console.log("账户余额不足！");
             return ("OUTSTOCK");
         }
