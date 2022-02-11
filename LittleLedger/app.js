@@ -443,7 +443,7 @@ function addExpenses(current_file_name, expenses_value, expenses_comments, expen
                 curBalance+=accountSheet[colName+i].v ;
             }
         }
-        if (expenses_value > curBalance) {
+        if (expenses_value >= curBalance+0.01) {
             console.log("账户余额不足！");
             return ("OUTSTOCK");
         }
