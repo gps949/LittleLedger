@@ -1,0 +1,28 @@
+app = "littleledger-name"
+
+
+[[services]]
+  internal_port = 3456
+  protocol = "tcp"
+
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.ports]]
+    port = "80"
+
+  [[services.tcp_checks]]
+    interval = 10000
+    timeout = 2000
+
+[[services]]
+  internal_port = 18080
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = "10080"
+
+[mounts]
+source="ledgers"
+destination="/home/littleledger/ledgers"
