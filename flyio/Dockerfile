@@ -1,6 +1,6 @@
 FROM node:alpine
 RUN mkdir -p /home/littleledger
-COPY ../LittleLedger /home/littleledger
+COPY ./LittleLedger /home/littleledger
 WORKDIR /home/littleledger
 RUN npm install
 
