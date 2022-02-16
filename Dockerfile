@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:alpine
 RUN mkdir -p /home/littleledger
 COPY ./LittleLedger /home/littleledger
 WORKDIR /home/littleledger
