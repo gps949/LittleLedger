@@ -60,3 +60,13 @@ node app.js USERNAME=<你的用户名> PASSWORD=<你的口令>
 3. 需要查看账本可以点击右上角下载或显示账本xlsx文件。
 4. 需要改账、统计分析时，可以直接在下载下来的xlsx文件的第4个表页（Sheet）上进行，前三个Sheet不要修改。如需任何操作，可在第4表页上以前3表页通过应用记录的数据进行。
 5. 手动修改过xlsx后直接上传服务端覆盖即可，但涉及账户或动账种类的修改需要点击左上角图标刷新页面。
+
+### Fly.io部署
+创建Fly.io账号、安装fly cli等步骤不进行赘述。
+```bash
+git clone https://github.com/gps949/LittleLedger.git
+cd LittleLedger/flyio
+cp ../LittleLedger ./ -r
+fly launch
+```
+
