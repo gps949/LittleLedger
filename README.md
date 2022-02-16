@@ -70,3 +70,13 @@ cp ../LittleLedger ./ -r
 fly launch
 ```
 
+根据fly cli的提示，选择y（从已有fly.toml导入配置）、设置应用名（可直接回车）、选择地区（可直接回车）、选择n两次。
+执行如下命令创建存储卷、设置webdav及应用访问用户名口令（后者可不配置），并部署：
+```bash
+fly volumes create ledgers --region lax --size 1 --encrypted=false
+fly secrets set WD_USER=<webdav用户名> WD_PWD=<webdav口令> LL_USER=[应用访问用户名] LL_PWD=[应用访问口令]
+fly deploy
+```
+
+部署成功后可以自行为fly.io应用配置域名解析访问方式。账本xlsx文件可通过应用的10080端口的webdav服务获取。
+
