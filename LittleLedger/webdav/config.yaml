@@ -1,0 +1,23 @@
+# Server related settings
+address: 0.0.0.0
+port: 18080
+auth: true
+tls: false
+cert: cert.pem
+key: key.pem
+prefix: /
+debug: false
+
+# Default user settings (will be merged)
+scope: ../ledgers
+modify: true
+rules: []
+
+# CORS configuration
+cors:
+  enabled: true
+  credentials: true
+
+users:
+  - username: "{env}WD_USER"
+    password: "{env}WD_PWD"
