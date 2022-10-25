@@ -23,7 +23,7 @@
   </div>
   <!-- 支出页面 -->
   <div id="expenses" class="mdui-container">
-    <form action="/" method="POST">
+    <form action="/" method="POST" onsubmit="disExpenseBtn()">
       <input name="addExpenses" class="mdui-hidden" />
       <div class="mdui-textfield">
         <input name="expenses_value" type="text" pattern="^([0-9]+)(\.\d{1,2})?$" required class="mdui-textfield-input"
@@ -53,13 +53,13 @@
           </option>
           <% } %>
       </select>
-      <button type="submit"
+      <button id="expense_btn" type="submit" 
         class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-float-right">记录</button>
     </form>
   </div>
   <!-- 收入页面 -->
   <div id="income" class="mdui-container">
-    <form action="/" method="POST">
+    <form action="/" method="POST" onsubmit="disIncomeBtn()">
       <input name="addIncome" class="mdui-hidden" />
       <div class="mdui-textfield">
         <input name="income_value" type="text" pattern="^([0-9]+)(\.\d{1,2})?$" required class="mdui-textfield-input"
@@ -89,13 +89,13 @@
           </option>
           <% } %>
       </select>
-      <button type="submit"
+      <button id="income_btn" type="submit"
         class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-float-right">记录</button>
     </form>
   </div>
   <!-- 转账页面 -->
   <div id="transfer" class="mdui-container">
-    <form action="/" method="POST">
+    <form action="/" method="POST" onsubmit="disTransBtn()">
       <input name="addTransfer" class="mdui-hidden" />
       <div class="mdui-textfield">
         <input name="transfer_value" type="text" pattern="^([0-9]+)(\.\d{1,2})?$" required class="mdui-textfield-input"
@@ -133,7 +133,7 @@
           </option>
           <% } %>
       </select>
-      <button type="submit"
+      <button id="trans_btn" type="submit"
         class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-float-right">记录</button>
     </form>
   </div>
@@ -145,7 +145,7 @@
       <div class="mdui-panel-item">
         <div class="mdui-panel-item-header">添加资金账户</div>
         <div class="mdui-panel-item-body">
-          <form action="/" method="POST">
+          <form action="/" method="POST" onsubmit="disAddAssetBtn()">
             <input name="addAssets" class="mdui-hidden" />
             <div class="mdui-textfield">
               <input name="assets_account_name" type="text" required class="mdui-textfield-input" placeholder="资金账户名" />
@@ -159,7 +159,7 @@
               <div class="mdui-textfield-helper">请在此填写要新增资金账户的初始余额</div>
             </div>
             <br />
-            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">添加</button>
+            <button id="addasset_btn" type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">添加</button>
           </form>
         </div>
       </div>
@@ -167,7 +167,7 @@
       <div class="mdui-panel-item">
         <div class="mdui-panel-item-header">添加负债账户</div>
         <div class="mdui-panel-item-body">
-          <form action="/" method="POST">
+          <form action="/" method="POST" onsubmit="disAddDebtBtn()">
             <input name="addDebt" class="mdui-hidden" />
             <div class="mdui-textfield">
               <input name="debt_account_name" type="text" required class="mdui-textfield-input" placeholder="负债账户名" />
@@ -181,7 +181,7 @@
               <div class="mdui-textfield-helper">请在此填写要新增负债账户的初始余债（不带负号）</div>
             </div>
             <br />
-            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">添加</button>
+            <button id="adddebt_btn" type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">添加</button>
           </form>
         </div>
       </div>
@@ -189,7 +189,7 @@
       <div class="mdui-panel-item">
         <div class="mdui-panel-item-header">添加动账类型</div>
         <div class="mdui-panel-item-body">
-          <form action="/" method="POST">
+          <form action="/" method="POST" onsubmit="disAddReasonBtn()">
             <input name="addReason" class="mdui-hidden" />
             <select name="reason_sort" class="mdui-select" mdui-select="{position: 'bottom'}">
               <option value="0">支出类</option>
@@ -203,7 +203,7 @@
               <div class="mdui-textfield-helper">请在此填写要新增的动账类型名称</div>
             </div>
             <br />
-            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">添加</button>
+            <button id="addreason_btn" type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">添加</button>
           </form>
         </div>
       </div>
@@ -242,6 +242,30 @@
       var inst = new mdui.Tab('#tab');
       inst.show('<%-loadTab%>');
 
+    }
+    function disExpenseBtn(){
+      document.getElementById("expense_btn").disabled="true"
+      console.log("Already Disabled!")
+    }
+    function disIncomeBtn(){
+      document.getElementById("income_btn").disabled="true"
+      console.log("Already Disabled!")
+    }
+    function disTransBtn(){
+      document.getElementById("trans_btn").disabled="true"
+      console.log("Already Disabled!")
+    }
+    function disAddAssetBtn(){
+      document.getElementById("addasset_btn").disabled="true"
+      console.log("Already Disabled!")
+    }
+    function disAddDebtBtn(){
+      document.getElementById("adddebt_btn").disabled="true"
+      console.log("Already Disabled!")
+    }
+    function disAddReasonBtn(){
+      document.getElementById("addreason_btn").disabled="true"
+      console.log("Already Disabled!")
     }
   </script>
 </body>
